@@ -104,6 +104,13 @@ public class StockServiceTest {
         stockService.calculatePrice("stockD");
     }
 
+
+    @Test(expected = SimpleStockException.class )
+    public void testCalculateStockPriceNoTrades() throws SimpleStockException {
+        stockService.calculatePrice("stockA");
+    }
+
+
     @Test
     public void testCalculateGBCE() throws SimpleStockException {
         T.info("<----Test testCalculateGBCE is being executed---->");
@@ -121,8 +128,6 @@ public class StockServiceTest {
     public void testCalculateGBCENoTrades() throws SimpleStockException {
         stockService.calculateGBCEAllShareIndex();
     }
-
-
 
     @Test
     public void testRecordTrades() throws SimpleStockException {
@@ -148,6 +153,8 @@ public class StockServiceTest {
 
         T.info("<----Test testRecordTrades ended---->");
     }
+
+
 
 
 

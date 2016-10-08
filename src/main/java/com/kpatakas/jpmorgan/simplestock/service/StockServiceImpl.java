@@ -86,15 +86,11 @@ public class StockServiceImpl implements StockService{
     private Double calculateStockPrice(Stock stock,Integer timeOffset) throws SimpleStockException {
         List<StockTrade> trades;
         if(timeOffset==null){
-            List<StockTrade> tradesSet = stockTradeRepository.getStockTrades(stock);
-            if(tradesSet==null||tradesSet.isEmpty()){
-                throw new SimpleStockException("No trades available for stock " + stock.getSymbol());
-            }
             trades=stockTradeRepository.getStockTrades(stock);
         }else {
            trades = stockTradeRepository.getStockTrades(stock, timeOffset);
         }
-        if(trades.isEmpty()){
+        if(trades==null||trades.isEmpty()){
             throw new SimpleStockException("No trades available for stock " + stock.getSymbol());
         }
         double quantitySum = 0.0;
@@ -105,7 +101,7 @@ public class StockServiceImpl implements StockService{
             quantitySum += stockTrade.getQuantity();
         }
         if(quantitySum==0){
-            throw new SimpleStockException("No stocks of stock " +stock.getSymbol() +" were traded");
+            throw new SimpleStockException("No trades available for stock " + stock.getSymbol());
         }
         return Utils.divide(tradePriceQuantitySum,quantitySum);
     }
