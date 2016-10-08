@@ -34,7 +34,7 @@ public class StockServiceTest {
     private static final Logger T = LoggerFactory.getLogger(StockRepositoryTest.class);
 
     @Autowired
-    StockService stockService;
+    private StockService stockService;
 
     private Stock stockA;
     private Stock stockB;
@@ -51,7 +51,7 @@ public class StockServiceTest {
     }
 
     @After
-    public void cleanUp() throws SimpleStockException {
+    public void cleanup() throws SimpleStockException {
         stockService.removeStock(stockA);
         stockService.removeStock(stockB);
         stockService.removeStock(stockC);
@@ -64,8 +64,11 @@ public class StockServiceTest {
         assertEquals(new Double(0.07), stockService.calculateDividendYield(stockB.getSymbol()));
         assertEquals(new Double(0.02), stockService.calculateDividendYield(stockC.getSymbol()));
         T.info("<----Test testCalculateDividedYield ended---->");
+    }
 
-
+    @Test(expected = SimpleStockException.class )
+    public void testCalculateDividedYieldNullStock() throws SimpleStockException {
+        stockService.calculateDividendYield("stockD");
     }
 
     @Test
@@ -76,6 +79,11 @@ public class StockServiceTest {
         assertEquals(new Double(60), stockService.calculatePERatio(stockC.getSymbol()));
         T.info("<----Test testCalculatePERatio ended---->");
 
+    }
+
+    @Test(expected = SimpleStockException.class )
+    public void testCalculatePERatioNullStock() throws SimpleStockException {
+        stockService.calculatePERatio("stockD");
     }
 
     @Test
@@ -91,6 +99,11 @@ public class StockServiceTest {
         T.info("<----Test testCalculateStockPrice ended---->");
     }
 
+    @Test(expected = SimpleStockException.class )
+    public void testCalculateStockPriceNullStock() throws SimpleStockException {
+        stockService.calculatePrice("stockD");
+    }
+
     @Test
     public void testCalculateGBCE() throws SimpleStockException {
         T.info("<----Test testCalculateGBCE is being executed---->");
@@ -103,6 +116,13 @@ public class StockServiceTest {
         assertEquals(new Double(109.92), stockService.calculateGBCEAllShareIndex());
         T.info("<----Test testCalculateGBCE ended---->");
     }
+
+    @Test(expected = SimpleStockException.class)
+    public void testCalculateGBCENoTrades() throws SimpleStockException {
+        stockService.calculateGBCEAllShareIndex();
+    }
+
+
 
     @Test
     public void testRecordTrades() throws SimpleStockException {
