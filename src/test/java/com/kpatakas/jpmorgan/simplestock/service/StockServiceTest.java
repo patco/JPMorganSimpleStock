@@ -134,15 +134,20 @@ public class StockServiceTest {
         T.info("<----Test testRecordTrades is being executed---->");
         StockTrade trade1 = new StockTrade(stockA, StockTradeType.BUY, Calendar.getInstance().getTime(), 2, 105d);
         stockService.recordTrade(trade1);
+        assertEquals(trade1.getPrice(),stockA.getTickerPrice());
         StockTrade trade2 = new StockTrade(stockA, StockTradeType.BUY, Calendar.getInstance().getTime(),3,110d );
         stockService.recordTrade(trade2);
+        assertEquals(trade2.getPrice(),stockA.getTickerPrice());
         StockTrade trade3 = new StockTrade(stockA, StockTradeType.BUY, Calendar.getInstance().getTime(), 5, 115d);
         stockService.recordTrade(trade3);
+        assertEquals(trade3.getPrice(),stockA.getTickerPrice());
         StockTrade trade4 = new StockTrade(stockB, StockTradeType.BUY, Calendar.getInstance().getTime(), 2, 115d);
         stockService.recordTrade(trade4);
+        assertEquals(trade4.getPrice(),stockB.getTickerPrice());
         StockTrade trade5 = new StockTrade(stockB, StockTradeType.BUY, Calendar.getInstance().getTime(), 8, 101d);
         stockService.recordTrade(trade5);
-
+        assertEquals(trade5.getPrice(),stockB.getTickerPrice());
+        
         List<StockTrade> tradesStockA = stockService.getStockTrades(stockA);
         assertNotNull("Trades for stockA are null",tradesStockA);
         assertEquals("Number of trades for stockA not the one expected",3,tradesStockA.size());
@@ -153,6 +158,57 @@ public class StockServiceTest {
 
         T.info("<----Test testRecordTrades ended---->");
     }
+
+    @Test(expected = SimpleStockException.class)
+    public void testRecordTradeNullTrade() throws SimpleStockException {
+        stockService.recordTrade(null);
+    }
+
+    @Test(expected = SimpleStockException.class)
+    public void testRecordTradeNullStock() throws SimpleStockException {
+        StockTrade trade1 = new StockTrade(null, StockTradeType.BUY, Calendar.getInstance().getTime(), 2, 105d);
+        stockService.recordTrade(trade1);
+    }
+
+    @Test(expected = SimpleStockException.class)
+    public void testRecordTradeNullType() throws SimpleStockException {
+        StockTrade trade1 = new StockTrade(stockA, null, Calendar.getInstance().getTime(), 2, 105d);
+        stockService.recordTrade(trade1);
+    }
+
+    @Test(expected = SimpleStockException.class)
+    public void testRecordTradeNullTimestamp() throws SimpleStockException {
+        StockTrade trade1 = new StockTrade(stockA, StockTradeType.BUY, null, 2, 105d);
+        stockService.recordTrade(trade1);
+    }
+
+    @Test(expected = SimpleStockException.class)
+    public void testRecordTradeNullQuantity() throws SimpleStockException {
+        StockTrade trade1 = new StockTrade(stockA, StockTradeType.BUY, Calendar.getInstance().getTime(), null, 105d);
+        stockService.recordTrade(trade1);
+    }
+
+    @Test(expected = SimpleStockException.class)
+    public void testRecordTradeNegativeQuantity() throws SimpleStockException {
+        StockTrade trade1 = new StockTrade(stockA, StockTradeType.BUY, Calendar.getInstance().getTime(), -10, 105d);
+        stockService.recordTrade(trade1);
+    }
+
+    @Test(expected = SimpleStockException.class)
+    public void testRecordTradeNullPrice() throws SimpleStockException {
+        StockTrade trade1 = new StockTrade(stockA, StockTradeType.BUY, Calendar.getInstance().getTime(), 2, null);
+        stockService.recordTrade(trade1);
+    }
+
+    @Test(expected = SimpleStockException.class)
+    public void testRecordTradeNegativePrice() throws SimpleStockException {
+        StockTrade trade1 = new StockTrade(stockA, StockTradeType.BUY, Calendar.getInstance().getTime(), 2, -1d);
+        stockService.recordTrade(trade1);
+    }
+
+
+
+
 
 
 

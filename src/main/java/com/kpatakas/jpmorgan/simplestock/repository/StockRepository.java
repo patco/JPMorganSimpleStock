@@ -1,6 +1,7 @@
 package com.kpatakas.jpmorgan.simplestock.repository;
 
 import com.kpatakas.jpmorgan.simplestock.model.Stock;
+import com.kpatakas.jpmorgan.simplestock.repository.exceptions.StockRepositoryException;
 
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public interface StockRepository {
      * Adds a new {@link Stock} in the repository
      * @param stock
      */
-    void addStock(Stock stock);
+    void addStock(Stock stock) throws StockRepositoryException;
 
     /**
      * Removes a stock from the repository

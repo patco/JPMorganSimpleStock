@@ -143,13 +143,39 @@ public class StockServiceImpl implements StockService{
             T.error("Trade is empty. Please provide valid data");
             throw new SimpleStockException("Trade is empty. Please provide valid data");
         }
+        if(trade.getStock()==null){
+            T.error("Trade is invalid. Stock value is empty. Please provide valid data");
+            throw new SimpleStockException("Trade is invalid. Stock value is empty. Please provide valid data");
+        }
+
+        if(trade.getTradeType()==null){
+            T.error("Trade is invalid. Trade type is empty. Please provide valid data");
+            throw new SimpleStockException("Trade is invalid. Trade type is empty. Please provide valid data");
+        }
+
+        if(trade.getPrice()==null){
+            T.error("Trade is invalid. Price is empty. Please provide valid data");
+            throw new SimpleStockException("Trade is invalid. Price is empty. Please provide valid data");
+        }
         if(trade.getPrice()<=0){
-            T.error("Trade is empty. Please provide valid data");
-            throw new SimpleStockException("Trade price "+trade.getPrice()+" is not valid");
+            T.error("Trade is invalid. Price is negative. Please provide valid data");
+            throw new SimpleStockException("Trade is invalid. Trade price "+trade.getPrice()+" is not valid");
+        }
+
+        if(trade.getQuantity()==null){
+            T.error("Trade is invalid. Quantity is empty. Please provide valid data");
+            throw new SimpleStockException("Trade is invalid. Trade price "+trade.getPrice()+" is not valid");
         }
         if(trade.getQuantity()<=0){
-            throw new SimpleStockException("0 shares quantity is not allowded.");
+            T.error("Trade is invalid. Negative or 0 shares quantity is not allowed.");
+            throw new SimpleStockException("Trade is invalid. Negative or 0 shares quantity is not allowed.");
         }
+
+        if(trade.getTradeTimestamp()==null){
+            T.error("Trade is invalid. Trade timestamp is empty. Please provide valid data");
+            throw new SimpleStockException("Trade is invalid. Trade timestamp is empty. Please provide valid data");
+        }
+
     }
 
 

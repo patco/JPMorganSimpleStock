@@ -3,6 +3,7 @@ package com.kpatakas.jpmorgan.simplestock.repository;
 import com.kpatakas.jpmorgan.simplestock.JPMorganTestConfiguration;
 import com.kpatakas.jpmorgan.simplestock.model.Stock;
 import com.kpatakas.jpmorgan.simplestock.model.StockType;
+import com.kpatakas.jpmorgan.simplestock.repository.exceptions.StockRepositoryException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,7 +48,7 @@ public class StockRepositoryTest {
     }
 
     @Test
-    public void testAddRetrieveStockBySymbol(){
+    public void testAddRetrieveStockBySymbol() throws StockRepositoryException {
         T.info("<----Test testAddRetrieveStockBySymbol is being executed---->");
         stockRepository.addStock(stock1);
         assertNotNull("Stock not found in the repository",stockRepository.findBySymbol("KP"));
@@ -59,4 +60,28 @@ public class StockRepositoryTest {
         T.info("<----Test testAddRetrieveStockBySymbol ended---->");
     }
 
+    @Test(expected = StockRepositoryException.class)
+    public void testAddStockNull() throws StockRepositoryException {
+        stockRepository.addStock(null);
+    }
+
+    @Test(expected = StockRepositoryException.class)
+    public void testAddStockSymbolNull() throws StockRepositoryException {
+        stockRepository.addStock(new Stock(null, StockType.PREFERRED,1d,null,1d,100d));
+    }
+
+    @Test(expected = StockRepositoryException.class)
+    public void testAddStockTypeNull() throws StockRepositoryException {
+        stockRepository.addStock(new Stock("AA", null,1d,null,1d,100d));
+    }
+
+    @Test(expected = StockRepositoryException.class)
+    public void testAddStockLastDividendNull() throws StockRepositoryException {
+        stockRepository.addStock(new Stock("AA", StockType.PREFERRED,null,0.02,1d,100d));
+    }
+
+    @Test(expected = StockRepositoryException.class)
+    public void testAddStockParValueNull() throws StockRepositoryException {
+        stockRepository.addStock(new Stock("AA", StockType.PREFERRED,1d,0.02,null,100d));
+    }
 }
