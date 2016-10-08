@@ -3,6 +3,7 @@ package com.kpatakas.jpmorgan.simplestock.repository;
 import com.kpatakas.jpmorgan.simplestock.model.Stock;
 import com.kpatakas.jpmorgan.simplestock.model.StockTrade;
 import com.kpatakas.jpmorgan.simplestock.repository.exceptions.StockRepositoryException;
+import com.kpatakas.jpmorgan.simplestock.repository.exceptions.StockTradeRepositoryException;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface StockTradeRepository {
      * Add a new {@link StockTrade} in the repository
      * @param trade
      */
-    void addStockTrade(StockTrade trade);
+    void addStockTrade(StockTrade trade) throws StockTradeRepositoryException;
 
     /**
      * Get all {@link StockTrade} for a specific {@link Stock}

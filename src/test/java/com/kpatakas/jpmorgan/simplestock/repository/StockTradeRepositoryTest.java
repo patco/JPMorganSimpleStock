@@ -6,6 +6,7 @@ import com.kpatakas.jpmorgan.simplestock.model.StockTrade;
 import com.kpatakas.jpmorgan.simplestock.model.StockTradeType;
 import com.kpatakas.jpmorgan.simplestock.model.StockType;
 import com.kpatakas.jpmorgan.simplestock.repository.exceptions.StockRepositoryException;
+import com.kpatakas.jpmorgan.simplestock.repository.exceptions.StockTradeRepositoryException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,7 +56,7 @@ public class StockTradeRepositoryTest {
     }
 
     @Test
-    public void testCreateStockTrades(){
+    public void testCreateStockTrades() throws StockTradeRepositoryException {
         T.info("<----Test testCreateStockTrades is being executed---->");
         StockTrade trade = new StockTrade(stockA,StockTradeType.BUY, Calendar.getInstance().getTime(), 1, 1.0);
         stockTradeRepository.addStockTrade(trade);
@@ -64,7 +65,7 @@ public class StockTradeRepositoryTest {
     }
 
     @Test
-    public void testRetrieveByTimeTrades() throws StockRepositoryException {
+    public void testRetrieveByTimeTrades() throws StockRepositoryException, StockTradeRepositoryException {
         T.info("<----Test testRetrieveByTimeTrades is being executed---->");
 
         StockTrade trade = new StockTrade(stockA,StockTradeType.BUY, Calendar.getInstance().getTime(), 1, 1.0);
@@ -79,7 +80,6 @@ public class StockTradeRepositoryTest {
 
         assertEquals(2, stockTradeRepository.getStockTrades(stockA).size());
         T.info("<----Test testRetrieveByTimeTrades ended---->");
-
     }
 
 

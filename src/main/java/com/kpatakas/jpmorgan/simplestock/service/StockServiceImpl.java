@@ -121,13 +121,17 @@ public class StockServiceImpl implements StockService{
 
     @Override
     public void recordTrade(StockTrade trade) throws SimpleStockException {
-        validateTrade(trade);
+        if(trade==null||trade.getStock()==null||trade.getStock().getSymbol()==null){
+            T.error("Transaction details: ");
+            throw new SimpleStockException("Not valid trade data");
+
+        }
+        stockTradeRepository.addStockTrade(trade);
         T.info("------------------------------------------------");
         T.info("Trading stock : " + trade.getStock().getSymbol());
         T.info("------------------------------------------------");
         T.info("Transaction details: ");
         T.info(trade.toString());
-        stockTradeRepository.addStockTrade(trade);
         trade.getStock().setTickerPrice(trade.getPrice());
         T.info("Trade for  stock : " + trade.getStock().getSymbol() +" completed.");
     }
@@ -135,47 +139,6 @@ public class StockServiceImpl implements StockService{
     @Override
     public List<StockTrade> getStockTrades(Stock stock) {
         return stockTradeRepository.getStockTrades(stock);
-    }
-
-
-    private void validateTrade(StockTrade trade) throws SimpleStockException {
-        if(trade==null){
-            T.error("Trade is empty. Please provide valid data");
-            throw new SimpleStockException("Trade is empty. Please provide valid data");
-        }
-        if(trade.getStock()==null){
-            T.error("Trade is invalid. Stock value is empty. Please provide valid data");
-            throw new SimpleStockException("Trade is invalid. Stock value is empty. Please provide valid data");
-        }
-
-        if(trade.getTradeType()==null){
-            T.error("Trade is invalid. Trade type is empty. Please provide valid data");
-            throw new SimpleStockException("Trade is invalid. Trade type is empty. Please provide valid data");
-        }
-
-        if(trade.getPrice()==null){
-            T.error("Trade is invalid. Price is empty. Please provide valid data");
-            throw new SimpleStockException("Trade is invalid. Price is empty. Please provide valid data");
-        }
-        if(trade.getPrice()<=0){
-            T.error("Trade is invalid. Price is negative. Please provide valid data");
-            throw new SimpleStockException("Trade is invalid. Trade price "+trade.getPrice()+" is not valid");
-        }
-
-        if(trade.getQuantity()==null){
-            T.error("Trade is invalid. Quantity is empty. Please provide valid data");
-            throw new SimpleStockException("Trade is invalid. Trade price "+trade.getPrice()+" is not valid");
-        }
-        if(trade.getQuantity()<=0){
-            T.error("Trade is invalid. Negative or 0 shares quantity is not allowed.");
-            throw new SimpleStockException("Trade is invalid. Negative or 0 shares quantity is not allowed.");
-        }
-
-        if(trade.getTradeTimestamp()==null){
-            T.error("Trade is invalid. Trade timestamp is empty. Please provide valid data");
-            throw new SimpleStockException("Trade is invalid. Trade timestamp is empty. Please provide valid data");
-        }
-
     }
 
 
