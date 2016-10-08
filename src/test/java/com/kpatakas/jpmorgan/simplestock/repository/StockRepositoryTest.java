@@ -15,10 +15,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Map;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.TestCase.assertEquals;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 /**
  * Created by Kostas Patakas on 2/10/2016.
  */
@@ -30,10 +29,10 @@ public class StockRepositoryTest {
     private static final Logger T = LoggerFactory.getLogger(StockRepositoryTest.class);
 
     @Autowired
-    StockRepository stockRepository;
+    private StockRepository stockRepository;
 
-    Stock stock1;
-    Stock stock2;
+    private Stock stock1;
+    private Stock stock2;
 
     @Before
     public void setup(){
@@ -42,7 +41,7 @@ public class StockRepositoryTest {
     }
 
     @After
-    public void cleanUp(){
+    public void cleanup(){
         stockRepository.removeStock(stock1);
         stockRepository.removeStock(stock2);
     }
