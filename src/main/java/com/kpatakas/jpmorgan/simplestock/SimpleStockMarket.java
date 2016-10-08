@@ -127,13 +127,13 @@ public class SimpleStockMarket{
         stockTrades.add(new StockTrade(stockALE, StockTradeType.SELL, Utils.getDateByMinuteOffset(3),12,62d));
 
         //Stock GIN
-        Stock stockGIN = new Stock("GIN", StockType.PREFERRED,8d,2d,100d,100d);
+        Stock stockGIN = new Stock("GIN", StockType.PREFERRED,8d,0.02d,100d,100d);
         stocks.add(stockGIN);
         //Trades for GIN stock
         stockTrades.add(new StockTrade(stockGIN, StockTradeType.BUY, Utils.getDateByMinuteOffset(25),5,165d));
         stockTrades.add(new StockTrade(stockGIN, StockTradeType.SELL, Utils.getDateByMinuteOffset(22),14,166d));
         stockTrades.add(new StockTrade(stockGIN, StockTradeType.BUY, Utils.getDateByMinuteOffset(3),10,182d));
-        stockTrades.add(new StockTrade(stockGIN, StockTradeType.SELL, Utils.getDateByMinuteOffset(1),12,162d));
+        stockTrades.add(new StockTrade(stockGIN, StockTradeType.SELL, Utils.getDateByMinuteOffset(1),12,175d));
 
         //Stock JOE
         Stock stockJOE = new Stock("JOE", StockType.COMMON,13d,null,250d,250d);
