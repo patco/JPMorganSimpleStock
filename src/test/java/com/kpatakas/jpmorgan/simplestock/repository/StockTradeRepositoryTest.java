@@ -31,10 +31,10 @@ public class StockTradeRepositoryTest {
     private static final Logger T = LoggerFactory.getLogger(StockRepositoryTest.class);
 
     @Autowired
-    StockTradeRepository stockTradeRepository;
+    private StockTradeRepository stockTradeRepository;
 
     @Autowired
-    StockRepository stockRepository;
+    private StockRepository stockRepository;
 
 
     private Stock stockA;
