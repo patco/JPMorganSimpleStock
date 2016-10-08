@@ -6,6 +6,7 @@ import com.kpatakas.jpmorgan.simplestock.model.StockTrade;
 import com.kpatakas.jpmorgan.simplestock.model.StockType;
 import com.kpatakas.jpmorgan.simplestock.repository.StockRepository;
 import com.kpatakas.jpmorgan.simplestock.repository.StockTradeRepository;
+import com.kpatakas.jpmorgan.simplestock.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,10 @@ public class StockServiceImpl implements StockService{
     private static final Logger T = LoggerFactory.getLogger(StockServiceImpl.class);
 
     @Autowired
-    StockRepository stockRepository;
+    private StockRepository stockRepository;
 
     @Autowired
-    StockTradeRepository stockTradeRepository;
+    private StockTradeRepository stockTradeRepository;
 
     @Override
     public void addStock(Stock stock) throws SimpleStockException {
@@ -62,9 +63,9 @@ public class StockServiceImpl implements StockService{
             throw new SimpleStockException("No Ticker Price is empty for " + stock.getSymbol());
         }
         if (StockType.PREFERRED.equals(stock.getStockType())) {
-            return round((stock.getFixedDividend() * stock.getParValue()) / stock.getTickerPrice());
+            return Utils.divide(stock.getFixedDividend() * stock.getParValue(),stock.getTickerPrice());
         }
-        return round(stock.getLastDividend() / stock.getTickerPrice());
+        return Utils.divide(stock.getLastDividend(), stock.getTickerPrice());
 
     }
 
@@ -74,12 +75,7 @@ public class StockServiceImpl implements StockService{
         if(stock.getTickerPrice()==null){
             throw new SimpleStockException("No Ticker Price for " + stock.getSymbol());
         }
-        Double dy = calculateDividendYield(stockSymbol);
-        if(dy==null || dy.equals(0d)){
-            throw new SimpleStockException("Unable to calculate valid value for Dividend Yield");
-
-        }
-        return round(stock.getTickerPrice()/calculateDividendYield(stockSymbol));
+        return Utils.divide(stock.getTickerPrice(),stock.getDividend());
     }
 
     @Override
@@ -111,7 +107,7 @@ public class StockServiceImpl implements StockService{
         if(quantitySum==0){
             throw new SimpleStockException("No stocks of stock " +stock.getSymbol() +" were traded");
         }
-        return round(tradePriceQuantitySum/quantitySum);
+        return Utils.divide(tradePriceQuantitySum,quantitySum);
     }
 
     @Override
@@ -124,7 +120,7 @@ public class StockServiceImpl implements StockService{
         for(Stock stock:stocks.values()){
             stockPrices.add(calculateStockPrice(stock, null));
         }
-        return round(geometricMean(stockPrices));
+        return Utils.geometricMean(stockPrices);
     }
 
     @Override
@@ -162,19 +158,6 @@ public class StockServiceImpl implements StockService{
         }
     }
 
-    private Double round(Double value){
-        return new BigDecimal(String.valueOf(value)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-    }
-
-    private Double geometricMean(ArrayList<Double> data)
-    {
-        double sum = data.get(0);
-
-        for (int i = 1; i < data.size(); i++) {
-            sum *= data.get(i);
-        }
-        return Math.pow(sum, 1.0 / data.size());
-    }
 
     private Stock getStock(String stockSymbol)throws SimpleStockException{
         Stock stock = stockRepository.findBySymbol(stockSymbol);

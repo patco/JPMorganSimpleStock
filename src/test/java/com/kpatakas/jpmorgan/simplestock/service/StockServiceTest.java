@@ -71,9 +71,9 @@ public class StockServiceTest {
     @Test
     public void testCalculatePERatio() throws SimpleStockException {
         T.info("<----Test testCalculatePERatio is being executed---->");
-        assertEquals(new Double(631.58), stockService.calculatePERatio(stockA.getSymbol()));
-        assertEquals(new Double(1714.29), stockService.calculatePERatio(stockB.getSymbol()));
-        assertEquals(new Double(6000), stockService.calculatePERatio(stockC.getSymbol()));
+        assertEquals(new Double(5.22), stockService.calculatePERatio(stockA.getSymbol()));
+        assertEquals(new Double(15.0), stockService.calculatePERatio(stockB.getSymbol()));
+        assertEquals(new Double(60), stockService.calculatePERatio(stockC.getSymbol()));
         T.info("<----Test testCalculatePERatio ended---->");
 
     }

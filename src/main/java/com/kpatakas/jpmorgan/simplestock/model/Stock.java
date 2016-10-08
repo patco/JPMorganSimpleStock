@@ -1,5 +1,7 @@
 package com.kpatakas.jpmorgan.simplestock.model;
 
+import com.kpatakas.jpmorgan.simplestock.utils.Utils;
+
 /**
  * Created by Kostas Patakas on 2/10/2016.
  */
@@ -40,6 +42,10 @@ public class Stock {
 
     public Double getFixedDividend() {
         return fixedDividend;
+    }
+
+    public Double getDividend() {
+        return stockType.equals(StockType.COMMON) ? lastDividend : Utils.round(fixedDividend*parValue);
     }
 
     public Double getParValue() {
