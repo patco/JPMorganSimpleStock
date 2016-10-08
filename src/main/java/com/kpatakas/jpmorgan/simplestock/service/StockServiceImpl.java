@@ -126,16 +126,14 @@ public class StockServiceImpl implements StockService{
     @Override
     public void recordTrade(StockTrade trade) throws SimpleStockException {
         validateTrade(trade);
-        T.debug("Trading stock : " + trade.getStock().getSymbol());
-        T.debug("------------------------------------------------\n");
-        T.debug("------------------------------------------------\n");
-        T.debug("Transaction details: \n");
-        T.debug(trade.toString());
+        T.info("------------------------------------------------");
+        T.info("Trading stock : " + trade.getStock().getSymbol());
+        T.info("------------------------------------------------");
+        T.info("Transaction details: ");
+        T.info(trade.toString());
         stockTradeRepository.addStockTrade(trade);
         trade.getStock().setTickerPrice(trade.getPrice());
-        T.debug("Trade for  stock : " + trade.getStock().getSymbol() +" completed.\n");
-        T.debug("------------------------------------------------\n");
-        T.debug("------------------------------------------------\n");
+        T.info("Trade for  stock : " + trade.getStock().getSymbol() +" completed.");
     }
 
     @Override
